@@ -9,20 +9,20 @@ const validationSchemaLibrary = [
     {date: yup.date().required("Please enter date")},
 ];
 
+const propsToArray = Object.entries(props);
+
+const [schemaEntry, setSchemaEntry]=useState();
 const [validationSchemaContainer, setValidationSchemaContainer]=useState({});
+const mySchema = {[schemaEntry]: yup[schemaEntry]().required("...")}
 
-props.map((validation: string) => {
-    const matchingSchema = validationSchemaLibrary.find((schema)=>{
-        Object.keys(schema)[0] === validation;
-    });
+for(let i = 0; i <= propsToArray.length; i ++){
+    setSchemaEntry(propsToArray[i]);
+    setValidationSchemaContainer((prevSchema)=>{
+        ...prevSchema,
+        ...mySchema,
+    })
+}
 
-    if(matchingSchema){
-        setValidationSchemaContainer((prevSchema) => ({
-            ...prevSchema,
-            ...matchingSchema,
-        }));
-    };
-});
 
 
 useEffect(()=>{
